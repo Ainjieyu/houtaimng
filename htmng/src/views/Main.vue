@@ -1,11 +1,13 @@
 <template>
   <div>
     <el-container>
-      <el-aside style="overflow: hidden; width: 200px;">
+      <el-aside style="overflow: hidden; width: auto;">
         <commen-aside/>
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
+        <el-header>
+          <commen-header/>
+        </el-header>
         <el-main>
             <router-view></router-view>
         </el-main>
@@ -15,12 +17,14 @@
 </template>
   <script>
   import commenAside from '@/components/commenAside.vue';
+  import commenHeader from '@/components/commenHeader.vue';
 export default {
   data() {
     return {};
   },
   components:{
-    commenAside
+    commenAside,
+    commenHeader
   }
 };
 </script>

@@ -9,7 +9,7 @@
       text-color="#fff"
       active-text-color="#ffd04b">
   
-    <h3>后台管理系统</h3>
+    <h3> {{isCollapse?"后台":"后台管理系统"}}</h3>
     <el-menu-item
       v-for="item in noChildren"
       @click = "menuClick(item)"
@@ -21,17 +21,18 @@
     </el-menu-item>
 
 
-    <el-submenu v-for="item in hasChildren" :index="item.name" :key="item.name">
+    <el-submenu  v-for="item in hasChildren" :index="item.name" :key="item.name">
       <template slot="title">
         <i :class="`el-icon-${item.icon}`"></i>
         <span slot="title">{{ item.label }}</span>
       </template>
       <el-menu-item-group
+      
         v-for="subItem in item.children"
         :key="subItem.name"
-        @click = "menuClick(subItem)"
+        
       >
-        <el-menu-item :index="subItem.name">{{ subItem.label }}</el-menu-item>
+        <el-menu-item @click = "menuClick(subItem)" :index="subItem.name">{{ subItem.label }}</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
@@ -46,6 +47,7 @@
 }
 .el-menu{
   height: 100vh;
+  border-right: none;
 
   h3 {
     color:#fff;
@@ -56,14 +58,12 @@
   }
 }
 
-</style>
+</style >
   
   <script>
 export default {
   data() {
     return {
-      isCollapse: false,
-      // isRouter:true,
       menuData: [
         {
           path: "/",
@@ -117,9 +117,12 @@ export default {
       console.log(key, keyPath);
     },
     menuClick(item){
-      this.$router.push(item.path)
-      console.log("111111")
-    }
+      if(this.$route.path !== item.path && !(this.$route.path === '/home' && (item.path ==='/'))){
+        this.$router.push(item.path)
+      }
+      
+    },
+    
   },
   computed: {
     noChildren() {
@@ -128,9 +131,10 @@ export default {
     hasChildren() {
       return this.menuData.filter((item) => item.children);
     },
+    isCollapse(){
+        return this.$store.state.tab.isCollapse
+    }
   },
-  // mounted(){
-  //   console.log(this.hasChildren)
-  // }
+ 
 };
 </script>
