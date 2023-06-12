@@ -43,10 +43,10 @@
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
-  height: 100vh;
+  height: 113vh;
 }
 .el-menu{
-  height: 100vh;
+  
   border-right: none;
 
   h3 {
