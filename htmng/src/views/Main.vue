@@ -9,6 +9,7 @@
           <commen-header/>
         </el-header>
         <el-main>
+          <commen-tag/>
             <router-view></router-view>
         </el-main>
       </el-container>
@@ -18,13 +19,15 @@
   <script>
   import commenAside from '@/components/commenAside.vue';
   import commenHeader from '@/components/commenHeader.vue';
+  import commenTag from '@/components/commenTag.vue';
 export default {
   data() {
     return {};
   },
   components:{
     commenAside,
-    commenHeader
+    commenHeader,
+    commenTag
   }
 };
 </script>
