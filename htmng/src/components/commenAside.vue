@@ -111,10 +111,10 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      
     },
     menuClick(item){
       if(this.$route.path !== item.path && !(this.$route.path === '/home' && (item.path ==='/'))){
