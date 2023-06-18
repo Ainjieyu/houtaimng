@@ -1,7 +1,7 @@
 <template>
   <div class="manage">
     <el-dialog
-      :title="this.modalType === 0 ?'新增用户':'编辑用户'"
+      :title="this.modalType === 0 ? '新增用户' : '编辑用户'"
       :visible.sync="dialogVisible"
       width="50%"
       :before-close="handleClose"
@@ -46,40 +46,58 @@
       </span>
     </el-dialog>
     <div class="manage-header">
-      <el-button type="primary"   @click="addUser()">新增 +</el-button>
+      <el-button type="primary" @click="addUser()">新增 +</el-button>
       <!-- form搜索区 -->
+      <el-form :inline="true" :model="userForm">
+        <el-form-item label="">
+          <el-input v-model="userForm.name" ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <el-table  height="90%"  :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="age" label="年龄" width="180"> </el-table-column>
-      <el-table-column prop="sex" label="性别">
-        <template slot-scope="scope">
-          <span> {{ scope.row.sex === 1 ? '男' : '女' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column  prop="birth" label="出生日期"> </el-table-column>
-      <el-table-column prop="addr" label="地址"> </el-table-column>
-      <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
-    </el-table>
+
+    <div class="commen-table">
+      <el-table height="90%" :data="tableData" stripe style="width: 100%">
+        <el-table-column prop="name" label="姓名" width="180">
+        </el-table-column>
+        <el-table-column prop="age" label="年龄" width="180"> </el-table-column>
+        <el-table-column prop="sex" label="性别">
+          <template slot-scope="scope">
+            <span> {{ scope.row.sex === 1 ? "男" : "女" }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="birth" label="出生日期"> </el-table-column>
+        <el-table-column prop="addr" label="地址"> </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pager">
+        <el-pagination
+          @current-change="changePage"
+          layout="prev, pager, next"
+          :total="total"
+        >
+        </el-pagination>
+      </div>
+    </div>
   </div>
 </template>
   <script>
-  import {getUser,addUser,updateUser,delUser} from '../api/index'
+import { getUser, addUser, updateUser, delUser } from "../api/index";
 export default {
   data() {
     return {
       dialogVisible: false,
-      modalType:0,//0新增，，1编辑
+      modalType: 0, //0新增，，1编辑
       form: {
         name: "",
         age: "",
@@ -94,73 +112,105 @@ export default {
         birth: [{ required: true, message: "请选择生日" }],
         addr: [{ required: true, message: "请输入地址" }],
       },
-      tableData:[]
+      tableData: [],
+      total: 0, //当前总条数
+      pageData: {
+        page: 1,
+        limit: 10,
+      },
+      userForm: {
+        name: "",
+      },
     };
   },
   methods: {
     submit() {
       this.$refs.form.validate((vali) => {
         if (vali) {
-          if(this.modalType === 0){
-            addUser(this.form).then(()=>{
-              this.getList()
-            })
-          }else{
-            updateUser(this.form).then(()=>{
-              this.getList()
-            })
+          if (this.modalType === 0) {
+            addUser(this.form).then(() => {
+              this.getList();
+            });
+          } else {
+            updateUser(this.form).then(() => {
+              this.getList();
+            });
           }
           this.dialogVisible = false;
           this.$refs.form.resetFields();
         }
       });
     },
-    getList(){
-      getUser().then(({data}) =>{
-      this.tableData = data.list
-    })
+    getList() {
+      getUser({params : { ...this.userForm, ...this.pageData }}).then(({ data }) => {
+        this.tableData = data.list;
+        this.total = data.count || 0;
+      });
     },
-    handleEdit(row){
+    handleEdit(row) {
       this.modalType = 1;
       this.dialogVisible = true;
-      this.form = JSON.parse(JSON.stringify(row))
+      this.form = JSON.parse(JSON.stringify(row));
       // this.submit()
     },
-    addUser(){
+    addUser() {
       this.modalType = 0;
-      this.dialogVisible = true
+      this.dialogVisible = true;
       // this.submit()
     },
-    handleDelete(row){
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          delUser({id : row.id}).then(()=>{
+    handleDelete(row) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          delUser({ id: row.id }).then(() => {
             this.$message({
-            type: 'success',
-            message: '删除成功!'
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
           });
-          this.getList()
-          })
-         
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+            type: "info",
+            message: "已取消删除",
+          });
         });
+    },
+    changePage(val) {
+      this.pageData.page = val;
+      this.getList();
+    },
+    onSubmit(){
+      this.getList()
+
     }
   },
-  mounted(){
-   this.getList()
-  }
+  mounted() {
+    this.getList();
+  },
 };
 </script>
 <style lang="less" scoped>
-.manage{
+.manage {
   height: 90%;
+  .commen-table {
+    position: relative;
+    height: calc(100% - 62px);
+    .pager {
+      position: absolute;
+      bottom: 0px;
+      right: 20px;
+    }
+  }
+}
+.manage-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
   

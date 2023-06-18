@@ -23,7 +23,7 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item @click.native="logout" >退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -73,6 +73,7 @@
 </style>
   <script>
 import { mapState } from "vuex";
+import Cookie from 'js-cookie'
 export default {
   data() {
     return {};
@@ -81,6 +82,10 @@ export default {
     handleMenu() {
       this.$store.commit("collapseMenu");
     },
+    logout(){
+      Cookie.remove('token')
+      this.$router.push('/login')
+    }
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中

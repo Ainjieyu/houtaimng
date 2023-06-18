@@ -17,3 +17,10 @@ export const updateUser = (data) =>{
     return http.post('/user/update',data)
 }
 
+export const getMenu = (data) =>{
+    return http.post('/permission/login',data)
+}
+
+
+
+
