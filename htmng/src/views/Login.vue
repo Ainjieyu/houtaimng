@@ -54,9 +54,11 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           getMenu(this.form).then(({ data }) => {
-            console.log(data);
+           
             if(data.code === 20000){
                 Cookie.set('token',data.data.token)
+                this.$store.commit('setMenu',data.data.menu)
+                this.$store.commit('addMenu',this.$router)
                 this.$router.push('home')
             }else{
                 this.$message.error(data.data.message);
@@ -64,8 +66,6 @@ export default {
           });
         }
       });
-
-      // this.$router.push('/home')
     },
   },
 };

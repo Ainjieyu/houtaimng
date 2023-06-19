@@ -12,43 +12,43 @@ export default {
         data: {
           menu: [
             {
-              path: '/',
+              path: '/home',
               name: 'home',
               label: '首页',
               icon: 's-home',
-              url: 'Home/Home'
+              url: 'Home'
             },
             {
               path: '/mall',
               name: 'mall',
               label: '商品管理',
               icon: 'video-play',
-              url: 'Mall/Mall'
+              url: 'Mall'
             },
             {
               path: '/user',
               name: 'user',
               label: '用户管理',
               icon: 'user',
-              url: 'User/User'
+              url: 'User'
             },
             {
               label: '其他',
               icon: 'location',
-              children: [
+              children: [ 
                 {
                   path: '/page1',
                   name: 'page1',
                   label: '页面1',
                   icon: 'setting',
-                  url: 'Other/PageOne'
+                  url: 'PageOne'
                 },
                 {
                   path: '/page2',
                   name: 'page2',
                   label: '页面2',
                   icon: 'setting',
-                  url: 'Other/PageTwo'
+                  url: 'PageTwo'
                 }
               ]
             }
@@ -63,19 +63,19 @@ export default {
         data: {
           menu: [
             {
-              path: '/',
+              path: '/home',
               name: 'home',
               label: '首页',
               icon: 's-home',
-              url: 'Home/Home'
+              url: 'Home'
             },
             {
-              path: '/video',
-              name: 'video',
+              path: '/mall',
+              name: 'mall',
               label: '商品管理',
               icon: 'video-play',
-              url: 'VideoManage/VideoManage'
-            }
+              url: 'Mall'
+            },
           ],
           token: Mock.Random.guid(),
           message: '获取成功'

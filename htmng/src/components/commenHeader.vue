@@ -53,9 +53,7 @@
     font-weight: normal;
     color:#606266
   }
-  .el-breadcrumb :hover{
-    // color:#fff
-  }
+
   .l-content span {
     color: #fff;
     font-size: 14px;
@@ -84,6 +82,7 @@ export default {
     },
     logout(){
       Cookie.remove('token')
+      Cookie.remove('menu')
       this.$router.push('/login')
     }
   },
