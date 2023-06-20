@@ -1,7 +1,9 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <commen-aside/>
+      </el-aside>
       <el-container>
         <el-header>
             <commen-header/>
@@ -14,9 +16,11 @@
 <script>
 import { defineComponent } from 'vue';
 import commenHeader from '../components/commenHeader.vue';
+import commenAside from '../components/commenAside.vue';
 export default defineComponent({
     components:{
         commenHeader,
+        commenAside
     }
 })
 </script>
