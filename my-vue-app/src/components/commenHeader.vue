@@ -6,6 +6,7 @@
           <Menu />
         </el-icon>
       </el-button>
+      <span>首页</span>
     </div>
 
     <div class="r-content">
@@ -13,6 +14,7 @@
         <span class="el-dropdown-link">
           <img src="../assets/images/user-default.png" alt="" class="user" />
         </span>
+       
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>个人中心</el-dropdown-item>
@@ -25,12 +27,19 @@
 </template>
 <style lang="less" scoped>
 .el-header {
+  padding: 0;
 }
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+.l-content{
+  color: #fff;
+  .el-button{
+    margin-right: 15px;
+  }
 }
 .r-content {
   .user {
