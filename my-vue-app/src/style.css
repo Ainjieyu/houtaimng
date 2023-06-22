@@ -73,6 +73,7 @@ button:focus-visible {
   border-right: none;
 }
 .el-main{
+  padding: 0px;
 }
 .el-header{
   background: #347;
