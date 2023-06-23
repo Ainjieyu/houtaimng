@@ -21,24 +21,54 @@
         </el-card>
       </div>
     </el-col>
-    <el-col class="r-content" :span="16">2</el-col>
+    <el-col class="r-content" :span="16">
+      <div class="tongji">
+        <el-card v-for="item in countData" :key="item.name" width="150px">
+          <div class="countCard">
+            <div :style="{ background: item.color }" class="licon">
+              <el-icon color="white" :size="25">
+                <component :is="item.icon" />
+              </el-icon>
+            </div>
+            <div class="rtxt">
+              <p class="cValue">￥{{ item.value }}</p>
+              <p class="cName">{{ item.name }}</p>
+            </div>
+          </div>
+        </el-card>
+      </div>
+      <el-card>
+        <div
+          id="zxt"
+          ref="zxt"
+          class="zxt"
+          style="width: 800px; height: 220px"
+        ></div>
+      </el-card>
+      <div class="boTu">
+        <el-card style="width: 380px">
+          <div id="zzt" style="width: 350px; height: 220px"></div>
+        </el-card>
+        <el-card style="width: 380px">
+          <div id="bt" style="width: 350px; height: 220px"></div>
+        </el-card>
+      </div>
+    </el-col>
   </el-row>
 </template>
 <style lang="less" scoped>
-.leftt{
-    // display: table-cell;
-    // vertical-align: middle;
+.boTu {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 .content {
   height: 100%;
-  background: #155700;
+  // background: #155700;
   display: flex;
   justify-content: center;
-  // text-align: center;
-
   .l-content {
-    
-
+    padding: 20px;
     .userinfo {
       height: 160px;
 
@@ -70,53 +100,176 @@
     }
   }
   .r-content {
-    background: #439600;
+    // background: #439600;
+    padding: 10px 20px 10px 20px;
+    .zxt {
+    }
+  }
+}
+.tongji {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 180px;
+  margin-bottom: 15px;
+  // padding: 15px 0px 15px 0px;
+  .countCard {
+    display: flex;
+
+    .rtxt {
+      line-height: 5px;
+      margin-left: 15px;
+      .cValue {
+        font-size: 20px;
+      }
+      .cName {
+        font-size: 12px;
+        color: #aaa;
+      }
+    }
+  }
+  .el-card__body {
+    padding: 0;
+    margin: 0;
+  }
+  .licon {
+    height: 70px;
+    width: 70px;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 80px;
+  }
+  .el-card {
+    width: 250px;
+    height: 70px;
+    padding: 0;
+    border: none;
+    /deep/.el-card__body {
+      padding: 0;
+      margin: 0;
+    }
   }
 }
 </style>
 <script>
+import * as echarts from "echarts";
+import { onMounted } from "vue";
 export default {
   setup() {
-    const tableData = [
+    const tableData = [];
+    const countData = [
       {
-        name: "oppo",
-        todayBuy: 100,
-        monthBuy: 300,
-        totalBuy: 800,
+        name: "今日支付订单",
+        value: 1234,
+        icon: "SuccessFilled",
+        color: "#2ec7c9",
       },
       {
-        name: "vivo",
-        todayBuy: 100,
-        monthBuy: 300,
-        totalBuy: 800,
+        name: "今日收藏订单",
+        value: 210,
+        icon: "StarFilled",
+        color: "#ffb980",
       },
       {
-        name: "苹果",
-        todayBuy: 100,
-        monthBuy: 300,
-        totalBuy: 800,
+        name: "今日未支付订单",
+        value: 1234,
+        icon: "GoodsFilled",
+        color: "#5ab1ef",
       },
       {
-        name: "小米",
-        todayBuy: 100,
-        monthBuy: 300,
-        totalBuy: 800,
+        name: "本月支付订单",
+        value: 1234,
+        icon: "SuccessFilled",
+        color: "#2ec7c9",
       },
       {
-        name: "三星",
-        todayBuy: 100,
-        monthBuy: 300,
-        totalBuy: 800,
+        name: "本月收藏订单",
+        value: 210,
+        icon: "StarFilled",
+        color: "#ffb980",
       },
       {
-        name: "魅族",
-        todayBuy: 100,
-        monthBuy: 300,
-        totalBuy: 800,
+        name: "本月未支付订单",
+        value: 1234,
+        icon: "GoodsFilled",
+        color: "#5ab1ef",
       },
     ];
+
+    onMounted(() => {
+      const e1 = echarts.init(document.getElementById("zxt"));
+      const option1 = {
+        xAxis: {
+          data: ["A", "B", "C", "D", "E"],
+        },
+        yAxis: {},
+        series: [
+          {
+            data: [10, 22, 99, 23, 19],
+            type: "line",
+            lineStyle: {
+              normal: {
+                color: "green",
+                width: 3,
+                type: "dashed",
+              },
+            },
+          },
+        ],
+      };
+      e1.setOption(option1);
+
+      //zzt
+      const e2 = echarts.init(document.getElementById("zzt"));
+      const option2 = {
+        xAxis: {
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        },
+        yAxis: {},
+        series: [
+          {
+            type: "bar",
+            data: [23, 24, 18, 25, 27, 28, 25],
+          },
+          {
+            type: "bar",
+            data: [26, 24, 18, 22, 23, 20, 27],
+          },
+        ],
+      };
+      e2.setOption(option2);
+      //bt
+      const e3 = echarts.init(document.getElementById("bt"));
+      const option3 = {
+        series: [
+          {
+            type: "pie",
+            data: [
+              {
+                value: 335,
+                name: "直接访问",
+              },
+              {
+                value: 234,
+                name: "联盟广告",
+              },
+              {
+                value: 1548,
+                name: "搜索引擎",
+              },
+            ],
+          },
+        ],
+      };
+      e3.setOption(option3);
+      //bt
+    });
+
     return {
       tableData,
+      countData,
     };
   },
 };
