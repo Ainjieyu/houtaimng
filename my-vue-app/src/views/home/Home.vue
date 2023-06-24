@@ -155,10 +155,12 @@
 </style>
 <script>
 import * as echarts from "echarts";
-import { onMounted } from "vue";
+import { onMounted,ref } from "vue";
+import axios from "axios";
+
 export default {
   setup() {
-    const tableData = [];
+    const tableData = ref([]) ;
     const countData = [
       {
         name: "今日支付订单",
@@ -198,7 +200,16 @@ export default {
       },
     ];
 
+    const getTable = async () => {
+      await axios.get("/home/getTable").then((res) => {
+        if(res.data.code === 200){
+          tableData.value = res.data.data.tableData
+        }
+      });
+    };
+
     onMounted(() => {
+      getTable();
       const e1 = echarts.init(document.getElementById("zxt"));
       const option1 = {
         xAxis: {

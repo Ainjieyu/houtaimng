@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router/index'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import store from './store'
+import  './api/mock'
 
 const app = createApp(App)
 
