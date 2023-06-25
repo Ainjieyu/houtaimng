@@ -16,7 +16,7 @@ service.interceptors.request.use(function (config) {
   });
 
 // 添加响应拦截器
-service.interceptors.response.user(function (response) {
+service.interceptors.response.use(function (res) {
     // 根据后端协商   视情况而定
     const {code,data,msg}  = res.data
     if(code == 200){

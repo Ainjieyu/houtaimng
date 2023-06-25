@@ -155,11 +155,12 @@
 </style>
 <script>
 import * as echarts from "echarts";
-import { onMounted,ref } from "vue";
+import { defineComponent,getCurrentInstance ,getCurrentScope, onMounted,ref } from "vue";
 import axios from "axios";
 
-export default {
+export default defineComponent({
   setup() {
+    const {proxy} = getCurrentInstance()
     const tableData = ref([]) ;
     const countData = [
       {
@@ -201,11 +202,14 @@ export default {
     ];
 
     const getTable = async () => {
-      await axios.get("https://www.fastmock.site/mock/4bb8cd1dc7f797907e74bab3db9237db/api/home/getTable").then((res) => {
-        if(res.data.code === 200){
-          tableData.value = res.data.data.tableData
-        }
-      });
+      // await axios.get("https://www.fastmock.site/mock/4bb8cd1dc7f797907e74bab3db9237db/api/home/getTable").then((res) => {
+      //   if(res.data.code === 200){
+      //     tableData.value = res.data.data.tableData
+      //   }
+      // });
+      let res = await proxy.$api.getTableData();
+      console.log(res.tableData)
+      tableData.value = res.tableData
     };
 
     onMounted(() => {
@@ -283,5 +287,5 @@ export default {
       countData,
     };
   },
-};
+})
 </script>

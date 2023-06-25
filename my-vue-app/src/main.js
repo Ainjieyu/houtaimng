@@ -7,6 +7,7 @@ import router from './router/index'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import store from './store'
 import  './api/mock'
+import api from './api/api'
 
 const app = createApp(App)
 
@@ -18,3 +19,4 @@ app.use(ElementPlus)
 app.use(router)
 app.use(store)
 app.mount('#app')
+app.config.globalProperties.$api = api
