@@ -201,7 +201,7 @@ export default {
     ];
 
     const getTable = async () => {
-      await axios.get("/home/getTable").then((res) => {
+      await axios.get("https://www.fastmock.site/mock/4bb8cd1dc7f797907e74bab3db9237db/api/home/getTable").then((res) => {
         if(res.data.code === 200){
           tableData.value = res.data.data.tableData
         }
