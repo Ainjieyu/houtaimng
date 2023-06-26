@@ -8,5 +8,19 @@ export default{
             data:params,
             mock:true
         })
+    },
+    getCountData(){ 
+        return request({
+            url : '/home/getCount',
+            methods:'get',
+            mock:true
+        })
+    },
+    getEhartsData(){ 
+        return request({
+            url : '/home/getEharts',
+            methods:'get',
+            mock:true
+        })
     }
 }

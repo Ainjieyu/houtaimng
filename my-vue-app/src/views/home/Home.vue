@@ -155,131 +155,92 @@
 </style>
 <script>
 import * as echarts from "echarts";
-import { defineComponent,getCurrentInstance ,getCurrentScope, onMounted,ref } from "vue";
-import axios from "axios";
-
+import {
+  defineComponent,
+  getCurrentInstance,
+  onMounted,
+  ref,
+} from "vue";
 export default defineComponent({
   setup() {
-    const {proxy} = getCurrentInstance()
-    const tableData = ref([]) ;
-    const countData = [
-      {
-        name: "今日支付订单",
-        value: 1234,
-        icon: "SuccessFilled",
-        color: "#2ec7c9",
-      },
-      {
-        name: "今日收藏订单",
-        value: 210,
-        icon: "StarFilled",
-        color: "#ffb980",
-      },
-      {
-        name: "今日未支付订单",
-        value: 1234,
-        icon: "GoodsFilled",
-        color: "#5ab1ef",
-      },
-      {
-        name: "本月支付订单",
-        value: 1234,
-        icon: "SuccessFilled",
-        color: "#2ec7c9",
-      },
-      {
-        name: "本月收藏订单",
-        value: 210,
-        icon: "StarFilled",
-        color: "#ffb980",
-      },
-      {
-        name: "本月未支付订单",
-        value: 1234,
-        icon: "GoodsFilled",
-        color: "#5ab1ef",
-      },
-    ];
-
+    const { proxy } = getCurrentInstance();
+    const tableData = ref([]);
+    const countData = ref([]);
     const getTable = async () => {
-      // await axios.get("https://www.fastmock.site/mock/4bb8cd1dc7f797907e74bab3db9237db/api/home/getTable").then((res) => {
-      //   if(res.data.code === 200){
-      //     tableData.value = res.data.data.tableData
-      //   }
-      // });
       let res = await proxy.$api.getTableData();
-      console.log(res.tableData)
-      tableData.value = res.tableData
+      tableData.value = res.tableData;
     };
-
-    onMounted(() => {
-      getTable();
+    const getCount = async () => {
+      let res = await proxy.$api.getCountData();
+      countData.value = res.countData;
+    };
+    const getEharts = async () => {
+      let res = await proxy.$api.getEhartsData();
+      //zxt
       const e1 = echarts.init(document.getElementById("zxt"));
+      const e1keys = Object.keys(res.orderData.data[0])
       const option1 = {
         xAxis: {
-          data: ["A", "B", "C", "D", "E"],
+          data: res.orderData.date,
         },
         yAxis: {},
-        series: [
-          {
-            data: [10, 22, 99, 23, 19],
-            type: "line",
-            lineStyle: {
-              normal: {
-                color: "green",
-                width: 3,
-                type: "dashed",
-              },
-            },
-          },
-        ],
+        legend: {show: true},
+        series: [],
       };
+      e1keys.forEach(key =>{
+        option1.series.push({
+          name:key,
+          type:'line',
+          data: res.orderData.data.map(item => item[key]),
+        })
+      })
       e1.setOption(option1);
-
       //zzt
       const e2 = echarts.init(document.getElementById("zzt"));
       const option2 = {
+        legend: {
+          show: true,
+        },
         xAxis: {
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: res.userData.map(item => item.date),
         },
         yAxis: {},
         series: [
           {
+            name:'新增用户',
             type: "bar",
-            data: [23, 24, 18, 25, 27, 28, 25],
+            data: res.userData.map(item => item.new),
           },
           {
+            name:'活跃用户',
             type: "bar",
-            data: [26, 24, 18, 22, 23, 20, 27],
+            data:  res.userData.map(item => item.active),
           },
         ],
       };
       e2.setOption(option2);
+      
       //bt
       const e3 = echarts.init(document.getElementById("bt"));
       const option3 = {
         series: [
           {
             type: "pie",
-            data: [
-              {
-                value: 335,
-                name: "直接访问",
-              },
-              {
-                value: 234,
-                name: "联盟广告",
-              },
-              {
-                value: 1548,
-                name: "搜索引擎",
-              },
-            ],
+            data: res.videoData,
           },
         ],
       };
       e3.setOption(option3);
-      //bt
+    };
+
+    onMounted(() => {
+      getEharts();
+      getTable();
+      getCount();
+      
+     
+      
+      
     });
 
     return {
@@ -287,5 +248,5 @@ export default defineComponent({
       countData,
     };
   },
-})
+});
 </script>
