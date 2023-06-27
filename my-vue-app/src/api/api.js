@@ -22,5 +22,13 @@ export default{
             methods:'get',
             mock:true
         })
+    },
+    getUserList(params){ 
+        return request({
+            url : '/user/getUser',
+            methods:'get',
+            data:params,
+            mock:false
+        })
     }
 }

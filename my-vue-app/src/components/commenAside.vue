@@ -78,9 +78,11 @@
 </style>
 <script>
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
   setup() {
     const router = useRouter()
+    const store  = useStore()
     const list = [
       {
         path: "/",
@@ -132,6 +134,7 @@ export default {
       return list.filter((item) => item.children);
     };
     const menuTab = (item) =>{
+      store.commit("menuTab",item);
       router.push({
         path : item.path
       })

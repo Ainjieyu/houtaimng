@@ -6,7 +6,12 @@
           <Menu />
         </el-icon>
       </el-button>
-      <span>首页</span>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item 
+        v-for="item in $store.state.tabList"
+        :key="item.name"
+        :to="{ path: item.path }">{{ item.label }}</el-breadcrumb-item>      
+      </el-breadcrumb>
     </div>
 
     <div class="r-content">
@@ -14,7 +19,7 @@
         <span class="el-dropdown-link">
           <img src="../assets/images/user-default.png" alt="" class="user" />
         </span>
-       
+
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>个人中心</el-dropdown-item>
@@ -35,13 +40,22 @@ header {
   align-items: center;
   width: 100%;
 }
-.l-content{
+.l-content {
   color: #fff;
-  .el-button{
+  display: flex;
+  /deep/.is-link{
+    color: #fff;
+    font-weight: normal;
+  }
+  /deep/.el-breadcrumb__inner:hover{
+    color: #fff;
+    cursor: pointer;
+  }
+  .el-button {
     margin-right: 15px;
   }
 }
-.r-content {
+.r-content {  
   .user {
     width: 40px;
     height: 40px;
@@ -57,9 +71,13 @@ export default {
     const collapseMenu = () => {
       store.commit("collapseMenu");
     };
+    // const menuTab = ()=>{
+    //   store.commit("menuTab");
+    // }
 
     return {
       collapseMenu,
+      // menuTab
     };
   },
 };
