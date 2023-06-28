@@ -146,7 +146,7 @@
     height: 70px;
     padding: 0;
     border: none;
-    /deep/.el-card__body {
+    :deep(.el-card__body) {
       padding: 0;
       margin: 0;
     }
