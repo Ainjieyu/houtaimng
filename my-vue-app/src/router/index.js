@@ -1,41 +1,48 @@
-import {createRouter,createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-const routes =[
+const routes = [
     {
-        path:'/',
+        path: '/',
         component: () => import('../views/Main.vue'),
-        children:[
+        children: [
             {
-                path:'/',
-                name:'home',
+                path: '/',
+                name: 'home',
                 component: () => import('../views/home/Home.vue'),
             },
             {
-                path:'/mall',
-                name:'mall',
+                path: '/mall',
+                name: 'mall',
                 component: () => import('../views/mall/mall.vue'),
             },
             {
-                path:'/user',
-                name:'user',
+                path: '/user',
+                name: 'user',
                 component: () => import('../views/user/user.vue'),
             },
             {
-                path:'/page1',
-                name:'page1',
+                path: '/page1',
+                name: 'page1',
                 component: () => import('../views/page1.vue'),
             },
             {
-                path:'/page2',
-                name:'page2',
+                path: '/page2',
+                name: 'page2',
                 component: () => import('../views/page2.vue'),
             },
+
         ]
-    }
+
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/login.vue'),
+    },
 ]
 
-const router  = createRouter({
-    history:createWebHashHistory(),
+const router = createRouter({
+    history: createWebHashHistory(),
     routes
 })
 

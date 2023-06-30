@@ -4,7 +4,7 @@ export default{
     getTableData(params){ 
         return request({
             url : '/home/getTable',
-            methods:'get',
+            method:'get',
             data:params,
             mock:true
         })
@@ -12,21 +12,45 @@ export default{
     getCountData(){ 
         return request({
             url : '/home/getCount',
-            methods:'get',
+            method:'get',
             mock:true
         })
     },
     getEhartsData(){ 
         return request({
             url : '/home/getEharts',
-            methods:'get',
+            method:'get',
             mock:true
         })
     },
     getUserList(params){ 
         return request({
             url : '/user/getUser',
-            methods:'get',
+            method:'get',
+            data:params,
+            mock:false
+        })
+    },
+    createUser(params){ 
+        return request({
+            url : '/user/addUser',
+            method:'post',
+            data:params,
+            mock:false
+        })
+    },
+    editUser(params){ 
+        return request({
+            url : '/user/edit',
+            method:'post',
+            data:params,
+            mock:false
+        })
+    },
+    delUser(params){ 
+        return request({
+            url : '/user/del',
+            method:'get',
             data:params,
             mock:false
         })

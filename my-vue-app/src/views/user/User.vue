@@ -1,54 +1,89 @@
 <template>
-  <el-dialog v-model="dialogFormVisible" title="新增" width="34%">
-    <el-form :model="form">
+  <el-dialog
+    v-model="dialogFormVisible"
+    :title="tabletype === 0 ? '新增' : '编辑'"
+    width="34%"
+  >
+    <el-form :model="form" ref="userForm">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="姓名"  placeholder="请输入姓名">
-            <el-input width="80px" v-model="form.name" />
+          <el-form-item
+            :rules="[{ required: true, message: '名字不能为空' }]"
+            label="姓名"
+            prop="name"
+          >
+            <el-input
+              width="80px"
+              v-model="form.name"
+              placeholder="请输入姓名"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="年龄" >
-            <el-input autocomplete="off" v-model="form.name" />
+          <el-form-item
+            label="年龄"
+            prop="age"
+            :rules="[
+              { required: true, message: '名字不能为空' },
+              { type: 'number', message: '年龄应为数字' },
+            ]"
+          >
+            <el-input v-model.number="form.age" placeholder="请输入年龄" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="性别" >
-            <el-select v-model="form.region" placeholder="请选择">
-              <el-option label="Zone No.1" value="shanghai" />
-              <el-option label="Zone No.2" value="beijing" />
+          <el-form-item
+            label="性别"
+            prop="sex"
+            :rules="[{ required: true, message: '名字不能为空' }]"
+          >
+            <el-select v-model="form.sex" placeholder="请选择">
+              <el-option label="男" value="1" />
+              <el-option label="女" value="0" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="出生日期" >
-            <el-input v-model="form.name" autocomplete="off" />
+          <el-form-item
+            label="出生日期"
+            prop="birth"
+            :rules="[{ required: true, message: '名字不能为空' }]"
+          >
+            <el-date-picker
+              v-model="form.birth"
+              type="date"
+              placeholder="请选择生日"
+              :size="size"
+              format="YYYY/MM/DD"
+              value-format="YYYY-MM-DD"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="地址" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off" />
+          <el-form-item
+            :rules="[{ required: true, message: '名字不能为空' }]"
+            label="地址"
+            prop="addr"
+            :label-width="formLabelWidth"
+          >
+            <el-input v-model="form.addr" placeholder="请输入地址" />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确认</el-button
-        >
+        <el-button @click="handleQuxiao">取消</el-button>
+        <el-button type="primary" @click="onSubmit">确认</el-button>
       </span>
     </template>
   </el-dialog>
   <div class="userHead">
-    <el-button type="primary" @click="dialogFormVisible = true"
-      >新增+</el-button
-    >
+    <el-button type="primary" @click="handleAdd">新增+</el-button>
 
     <el-form :inline="true" :model="formInline">
       <el-form-item label="请输入">
@@ -67,13 +102,11 @@
         <el-table-column prop="addr" label="地址" width="280" />
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-              >编辑</el-button
-            >
+            <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button
               size="small"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
+              @click="handleDelete(scope.row)"
               >删除</el-button
             >
           </template>
@@ -90,9 +123,9 @@
   </div>
 </template>
 <style lang="less" scoped>
-:deep(.el-dialog){
-  :deep(.el-input){
-    width: 180px!important;
+:deep(.el-dialog) {
+  :deep(.el-input) {
+    width: 180px !important;
   }
 }
 .userHead {
@@ -127,9 +160,48 @@ import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 export default {
   setup() {
     const { proxy } = getCurrentInstance();
-    const form = reactive({
+    const handleDelete =  async (row)=>{
+     await proxy.$api.delUser(row); 
+      getUserList(config);
+      
+    }
+    let tabletype = ref(0); //0新增。1编辑
+    const handleAdd = () => {
+      tabletype.value = 0;
+      dialogFormVisible.value = true;
+    };
+    const handleEdit = (row) => {
+      tabletype.value = 1;
+      dialogFormVisible.value = true;
+      Object.assign(form , row)
+    };
+    const onSubmit = () => {
+      proxy.$refs.userForm.validate(async (valid) => {
+        if (valid) {
+          if (tabletype === 0) {
+            let res = await proxy.$api.createUser(form);
+            if (res) {
+              dialogFormVisible.value = false;
+              proxy.$refs.userForm.resetFields();
+              getUserList(config);
+            }
+          } else {
+            let res = await proxy.$api.editUser(form);
+            if (res) {
+              dialogFormVisible.value = false;
+              proxy.$refs.userForm.resetFields();
+              getUserList(config);
+            }
+          }
+        }
+      });
+    };
+    let form = reactive({
       name: "",
-      region: "",
+      age: "",
+      addr: "",
+      birth: "",
+      sex: "",
     });
     const dialogFormVisible = ref(false);
     const zengjia = () => {
@@ -148,6 +220,10 @@ export default {
       page: 1,
       name: "",
     });
+    const handleQuxiao = () => {
+      dialogFormVisible.value = false;
+      proxy.$refs.userForm.resetFields();
+    };
     const pageChange = (pager) => {
       config.page = pager;
       getUserList(config);
@@ -170,11 +246,17 @@ export default {
       list1,
       config,
       pageChange,
+      handleDelete,
       formInline,
       sousuo,
       dialogFormVisible,
       zengjia,
       form,
+      onSubmit,
+      handleQuxiao,
+      handleEdit,
+      tabletype,
+      handleAdd,
     };
   },
 };

@@ -102,8 +102,7 @@
   .r-content {
     // background: #439600;
     padding: 10px 20px 10px 20px;
-    .zxt {
-    }
+    
   }
 }
 .tongji {
