@@ -67,6 +67,7 @@ button:focus-visible {
 }
 .el-aside{
   height: 100vh;
+  width: auto;
   background: #369;
 }
 .el-menu{

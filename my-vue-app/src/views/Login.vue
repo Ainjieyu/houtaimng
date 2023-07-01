@@ -3,26 +3,21 @@
     <div class="login">
       <h3>登录</h3>
       <el-form
-        ref="ruleFormRef"
-        :model="ruleForm"
-        status-icon
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
+        :model="loginForm"
+        label-width="80px"
       >
-        <el-form-item height="100px"  label="用户名" prop="">
-          <el-input />
+        <el-form-item  label="用户名" prop="username">
+          <el-input  type="input" v-model="loginForm.username" />
         </el-form-item>
-        <el-form-item label="密码" prop="">
-          <el-input width="150px" type="password" autocomplete="off" />
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="loginForm.password"  width="100px" type="password" />
         </el-form-item>
-
         <el-form-item>
           <el-button
             size="large"
             id="loginbtn"
             type="primary"
-            @click="submitForm(ruleFormRef)"
+            @click="login"
             >登录</el-button
           >
         </el-form-item>
@@ -42,16 +37,39 @@
   // margin-left: auto;
 }
 .el-card {
-  width: 30%;
+  width: 22%;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 150px;
 }
 .login {
   text-align: center;
 }
 </style>
 <script>
+import { getCurrentInstance, reactive } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
 export default {
-  setup() {},
+  setup() {
+    const loginForm = reactive({
+      username:'',
+      password:''
+    })
+    const store = useStore()
+    const router = useRouter()
+    const {proxy} = getCurrentInstance()
+    const login = async ()=>{
+      let res  = await proxy.$api.getMenu(loginForm)
+     
+      store.commit('setMenu',res.menu)
+      router.push({name : 'home'})
+
+    }
+    return{
+      loginForm,
+      login
+    }
+  },
 };
 </script>

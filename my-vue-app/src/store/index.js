@@ -13,6 +13,7 @@ export default createStore({
                         url: "Home/Home",
                     },
                 ],
+                menu:[]
         },
         mutations: {
             collapseMenu(state) {
@@ -27,6 +28,18 @@ export default createStore({
             },
             delTabList(state,val){
                 state.tabList = state.tabList.filter(item => item.name !== val.name)
+            },
+            setMenu(state,val){
+                state.menu = val
+                localStorage.setItem('menu',JSON.stringify(val))
+            },
+            addMenu(state){
+                // let localStorage.getItem('')
+                if(!localStorage.getItem('menu')){
+                    return
+                }
+                let menu = JSON.parse(localStorage.getItem('menu')) 
+                state.menu = menu
             }
         }   
 })

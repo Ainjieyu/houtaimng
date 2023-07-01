@@ -1,8 +1,5 @@
 <template>
-  <el-aside :width="$store.state.isCollapse ? '200px' : '100px'"
-
-
-   :class="($store.state.isCollapse ? 'bianda' : 'suoxiao')">  
+  <el-aside  :class="$store.state.isCollapse ? 'bianda' : 'suoxiao'">  
     <el-menu
       class="el-menu-vertical-demo"
       background-color="#369"
@@ -58,18 +55,19 @@
   width: 18px;
   height: 18px;
 }
-.el-aside {
+:deep(.el-aside) {
   height: 100vh;
+  // width: auto;
   text-align: center;
 }
 .suoxiao {
-  width: 70px;
+  width: 70px !important;
   .el-menu{
     padding-left: 0;
   }
 }
 .bianda {
-  width: 130px;
+  width: 130px !important;
   .el-menu{
     padding-left: 0;
   }
@@ -77,69 +75,29 @@
 
 </style>
 <script>
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 export default {
   setup() {
     const router = useRouter()
     const store  = useStore()
-    const list = [
-      {
-        path: "/",
-        name: "home",
-        label: "首 页",
-        icon: "House",
-        url: "Home/Home",
-      },
-      {
-        path: "/mall",
-        name: "mall",
-        label: "商品管理",
-        icon: "video-play",
-        url: "Mall/Mall",
-      },
-      {
-        path: "/user",
-        name: "user",
-        label: "用户管理",
-        icon: "user",
-        url: "User/User",
-      },
-      {
-        label: "其他",
-        icon: "location",
-        path: "/Other",
-        children: [
-          {
-            path: "/page1",
-            name: "page1",
-            label: "页面1",
-            icon: "setting",
-            url: "Other/PageOne",
-          },
-          {
-            path: "/page2",
-            name: "page2",
-            label: "页面2",
-            icon: "setting",
-            url: "Other/PageTwo",
-          },
-        ],
-      },
-    ];
     const nochildren = () => {
-      return list.filter((item) => !item.children);
+      return asyncList.filter((item) => !item.children);
     };
     const haschildren = () => {
-      return list.filter((item) => item.children);
+      return asyncList.filter((item) => item.children);
     };
+    const asyncList  = store.state.menu
     const menuTab = (item) =>{
       store.commit("menuTab",item);
       router.push({
         path : item.path
       })
     }
-
+    onMounted(() => {
+      store.commit('addMenu')
+    });
     return {
       nochildren,
       haschildren,

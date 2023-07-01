@@ -112,7 +112,6 @@
   align-items: center;
   height: 180px;
   margin-bottom: 15px;
-  // padding: 15px 0px 15px 0px;
   .countCard {
     display: flex;
 
@@ -236,10 +235,6 @@ export default defineComponent({
       getEharts();
       getTable();
       getCount();
-      
-     
-      
-      
     });
 
     return {

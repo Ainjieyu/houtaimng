@@ -17,7 +17,7 @@
 <style lang="less" scoped>
 .el-tag {
   margin-left: 10px;
-  margin-bottom: -300px;
+  // margin-bottom: -300px;
 }
 .ttag {
   padding-left: 12px;
