@@ -1,7 +1,8 @@
-
 import { createStore } from 'vuex'
 
+
 export default createStore({
+    // 
         state:{
                 isCollapse: true,
                 tabList: [
@@ -33,13 +34,34 @@ export default createStore({
                 state.menu = val
                 localStorage.setItem('menu',JSON.stringify(val))
             },
-            addMenu(state){
-                // let localStorage.getItem('')
+            addMenu(state,router){
+                console.log('addMenu,router',router)
                 if(!localStorage.getItem('menu')){
                     return
                 }
                 let menu = JSON.parse(localStorage.getItem('menu')) 
                 state.menu = menu
+
+                const menuAry = []
+                menu.forEach(item => {
+                    if(item.children){
+                        item.children = item.children.map(item =>{
+                            let url  = `../views/${item.url}.vue`
+                            item.component = () => import(url)
+                            return item
+                        });
+                        menuAry.push(...item.children)
+                    }else{
+                        let url  = `../views/${item.url}.vue`
+                        item.component =  () => import(url)
+                        menuAry.push(item)
+                    };
+                });
+                // const router  = useRouter
+                menuAry.forEach(item =>{
+                    console.log('menuAry,router',router)
+                    router?.addRoute('home1',item)
+                })
             }
         }   
 })

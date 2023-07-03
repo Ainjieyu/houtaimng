@@ -46,7 +46,8 @@
 }
 </style>
 <script>
-import { getCurrentInstance, reactive } from 'vue';
+import { getCurrentInstance, reactive,nextTick } from 'vue';
+
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -63,12 +64,19 @@ export default {
       let res  = await proxy.$api.getMenu(loginForm)
      
       store.commit('setMenu',res.menu)
+      // nextTick(() => {
+        store.commit('addMenu',router)
+      // });
+      
+      console.log('login，router',router)
       router.push({name : 'home'})
+      
 
     }
     return{
       loginForm,
-      login
+      login,
+     
     }
   },
 };
