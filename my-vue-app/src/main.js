@@ -18,6 +18,22 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.config.globalProperties.$api = api
 store.commit('addMenu',router)
+function checkRouter(path){
+    console.log('112',router.getRoutes())
+}
+checkRouter()
+router.beforeEach((to,from,next)=>{
+    store.commit('getToken')
+    const token  =  store.state.token
+    if(!token && to.name !== 'login'){
+        next({name:"login"})
+    }else{
+        next()
+    }
+})
+    
+
+
 app.use(ElementPlus)
 app.use(router).use(store)
 

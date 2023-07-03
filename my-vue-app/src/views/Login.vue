@@ -64,12 +64,11 @@ export default {
       let res  = await proxy.$api.getMenu(loginForm)
      
       store.commit('setMenu',res.menu)
-      // nextTick(() => {
         store.commit('addMenu',router)
-      // });
-      
+        store.commit('setToken',res.token)
+     
       console.log('login，router',router)
-      router.push({name : 'home'})
+      router.push({path: '/'}) 
       
 
     }

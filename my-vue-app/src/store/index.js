@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
+import Cookie from 'js-cookie'
 
 
 export default createStore({
-    // 
         state:{
                 isCollapse: true,
                 tabList: [
@@ -14,7 +14,8 @@ export default createStore({
                         url: "Home/Home",
                     },
                 ],
-                menu:[]
+                menu:[],
+                token : ''
         },
         mutations: {
             collapseMenu(state) {
@@ -62,6 +63,21 @@ export default createStore({
                     console.log('menuAry,router',router)
                     router?.addRoute('home1',item)
                 })
+            },
+            clearMenu(state){
+                state.menu = []
+                localStorage.removeItem('menu')
+            },
+            setToken(state,val){
+                state.token = val
+                Cookie.set('token',val)
+            },
+            removeToken(state){
+                state.token = ''
+                Cookie.remove('token')
+            },
+            getToken(state){
+                state.token = state.token || Cookie.get('token')
             }
         }   
 })

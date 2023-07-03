@@ -23,7 +23,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -64,20 +64,23 @@ header {
 }
 </style>
 <script>
+import { useRouter } from 'vue-router';
 import { useStore } from "vuex";
 export default {
   setup() {
     let store = useStore();
+    const router = useRouter()
     const collapseMenu = () => {
       store.commit("collapseMenu");
     };
-    // const menuTab = ()=>{
-    //   store.commit("menuTab");
-    // }
+    const logout = ()=>{
+      store.commit("clearMenu");
+      router.push('/login')
+    }
 
     return {
       collapseMenu,
-      // menuTab
+      logout
     };
   },
 };
