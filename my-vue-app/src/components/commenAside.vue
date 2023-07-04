@@ -96,7 +96,7 @@ export default {
       })
     }
     onMounted(() => {
-      store.commit('addMenu')
+      // store.commit('addMenu')
     });
     return {
       nochildren,

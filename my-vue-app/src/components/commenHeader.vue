@@ -75,6 +75,7 @@ export default {
     };
     const logout = ()=>{
       store.commit("clearMenu");
+      store.commit("removeToken");
       router.push('/login')
     }
 

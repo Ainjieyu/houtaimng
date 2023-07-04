@@ -33,7 +33,7 @@ export default createStore({
             },
             setMenu(state,val){
                 state.menu = val
-                localStorage.setItem('menu',JSON.stringify(val))
+                localStorage.setItem('menu',JSON.stringify(val)) 
             },
             addMenu(state,router){
                 console.log('addMenu,router',router)
@@ -58,7 +58,7 @@ export default createStore({
                         menuAry.push(item)
                     };
                 });
-                // const router  = useRouter
+               
                 menuAry.forEach(item =>{
                     console.log('menuAry,router',router)
                     router?.addRoute('home1',item)

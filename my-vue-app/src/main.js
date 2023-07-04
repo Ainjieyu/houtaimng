@@ -19,15 +19,23 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.config.globalProperties.$api = api
 store.commit('addMenu',router)
 function checkRouter(path){
-    console.log('112',router.getRoutes())
+    const hasCheck = router.getRoutes().filter(item => item.path == path).length
+   if(hasCheck){
+    return true
+   }else{
+    return false
+   }
 }
-checkRouter()
 router.beforeEach((to,from,next)=>{
     store.commit('getToken')
     const token  =  store.state.token
     if(!token && to.name !== 'login'){
         next({name:"login"})
-    }else{
+    }
+    else if(!checkRouter(to.path)){
+        next({name:"home"})
+    }
+    else{
         next()
     }
 })
